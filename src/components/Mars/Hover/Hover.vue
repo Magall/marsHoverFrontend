@@ -5,7 +5,7 @@
 <script lang="ts">
 import Cordinates from "@/types/Coordinates";
 import Vue from "vue";
-import 'animate.css';
+import "animate.css";
 export default Vue.extend({
   props: ["path"],
   mounted() {
@@ -18,25 +18,28 @@ export default Vue.extend({
     return {
       i: 0,
       pos: this.path[0],
+      bottom:0
     };
   },
   computed: {
-    // currentPos(): Cordinates {
-    //   return this.path[this.i ];
-    // },
- 
-    style(): Object {
+    currentPos(): Cordinates {
+      return this.path[this.i];
+    },
+    proxPos(): Cordinates {
+      return this.path[this.i];
+    },
 
+    style(): Object {
+     
       return {
-        left: this.path[this.i ].x * 145 + "px",
-        bottom:this.path[this.i ].y * 145 + "px",
+        left: this.path[this.i].x * 145 + "px",
+        bottom: this.path[this.i].y * 145 + "px",
       };
     },
-    
   },
   watch: {
     i(val) {
-        console.log(this.i)
+      console.log(this.i);
       let a = setTimeout(() => {
         this.i += 1;
       }, 2000);

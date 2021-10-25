@@ -1,0 +1,14 @@
+#results{
+    display: flex;
+    flex-direction: column;
+    padding: $spacing-small;
+    .result{
+        display: flex;
+        // flex-direction: column;
+        border: 1px solid $gray;
+        padding: $spacing-normal;
+        margin: $spacing-small;
+        justify-content: space-between;
+        border-radius: 8px;
+    }
+}

@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Services from '@/services'
+
+
 Vue.config.productionTip = false
 const services = new Services()
 declare module 'vue/types/vue' {

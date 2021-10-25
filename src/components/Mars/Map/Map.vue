@@ -5,7 +5,7 @@
         {{ idx }} , {{ idy }}
       </div>
     </div>
-    <Hover v-for="(hover,i) in hoversResponse" :key="i" :path="hover.hoverHistory" />
+    <Hover v-for="(hover,i) in hoversResponse" :key="i+Math.random()" :path="hover.hoverHistory" />
   </div>
 </template>
 <script lang="ts">

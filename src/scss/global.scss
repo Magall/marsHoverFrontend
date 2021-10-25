@@ -12,10 +12,10 @@
     font-size: 16px;
     border-radius: 4px;
   }
-  
+ 
   .btn-primary {
     background: $blue;
-    padding: $spacing-small;
+    padding: $spacing-medium;
     color: white;
     border: 0;
     border-radius: $spacing-small/2;
@@ -58,8 +58,14 @@
     box-sizing: border-box;
   }
   
-  .invalid {
-    border: 1px solid rgb(255, 135, 135) !important;
+  .badge-danger{
+    background-color: red;
+    color: white;
+    font-size: $font-small;
+    padding: $spacing-small;
+    border-radius: 8px;
+    font-weight: bold;
+    // position: absolute;
   }
   
   .btn, .btn-primary, .btn-danger {

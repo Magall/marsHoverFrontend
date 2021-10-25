@@ -1,24 +1,27 @@
 <template>
   <div>
     <h1>Welcome to the Mars Hover Mission Control !</h1>
-    <form @submit.prevent="sendData">
+    <form @submit.prevent="checkData">
       <input
         type="number"
         class="input"
         v-model="limit.x"
         placeholder="East limit"
+        required
       />
       <input
         type="number"
         class="input"
         v-model="limit.y"
         placeholder="North limit"
+        required
       />
       <input
         type="number"
         class="input"
         v-model="hoverQtd"
         placeholder="How Many hovers?"
+        required
       />
       <div v-if="parseInt(hoverQtd) > 0" class="hovers-container">
         <h3>Hovers Data</h3>
@@ -35,50 +38,86 @@
             class="input"
             @focusout="updateHoverStartPosition(i, $event, 'x')"
             placeholder="East starting position"
+            required
           />
           <input
             type="number"
             class="input"
             placeholder="North starting position"
             @focusout="updateHoverStartPosition(i, $event, 'y')"
+            required
           />
           <select
             class="select"
             @change="updateStartHeading(i, $event.target.value)"
+            required
           >
-            <option value="" selected>Select</option>
+            <option value="">Select</option>
             <option value="N">N</option>
             <option value="E">E</option>
             <option value="S">S</option>
             <option value="W">W</option>
           </select>
           <div class="instructions">
-            <div class="text">
-              <span>Instructions</span>
-            </div>
             <div class="buttons">
-              <button @click.prevent="addInstruction(i, 'L')">Left</button>
-              <button @click.prevent="addInstruction(i, 'R')">Right</button>
-              <button @click.prevent="addInstruction(i, 'M')">Move</button>
+              <button
+                class="btn-primary"
+                @click.prevent="addInstruction(i, 'L')"
+              >
+                Left
+              </button>
+              <button
+                class="btn-primary"
+                @click.prevent="addInstruction(i, 'R')"
+              >
+                Right
+              </button>
+              <button
+                class="btn-primary"
+                @click.prevent="addInstruction(i, 'M')"
+              >
+                Move
+              </button>
             </div>
           </div>
+          <div class="commands">
+            <span
+              v-for="(command, i) in hoversData.hovers[i].instructions"
+              :key="i"
+              >{{ command }}</span
+            >
+          </div>
         </div>
+        <span v-if="(!valid && sent)" class="badge-danger"
+          >Error, fill every field and send instructions!</span
+        >
+
+         <span v-if="!apiError" class="badge-danger"
+          >Error, invalid instructions, you are off bounds!</span
+        >
       </div>
-      <input type="submit" value="Send" />
+      <input type="submit" class="btn-primary" value="Send" />
     </form>
-    <Map :limitX="parseInt(limit.x)" :limitY="parseInt(limit.y)" :hoversResponse="hoversResponse" v-if=" hoversResponse.length>0"/>
+    <Map
+      :limitX="parseInt(limit.x)"
+      :limitY="parseInt(limit.y)"
+      :hoversResponse="hoversResponse"
+      v-if="hoversResponse.length > 0"
+    />
+    <Results :hovers="hoversResponse"/>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import Results from "@/components/Results/Results.vue"
 import Cordinates from "@/types/Coordinates";
 import clone from "just-clone";
 import HoverInputDto from "@/Dtos/HoverInputDto";
 import Map from "@/components/Mars/Map/Map.vue";
 export default Vue.extend({
   name: "Home",
-  components: { Map },
+  components: { Map ,Results},
   data() {
     return {
       hoverQtd: "",
@@ -88,7 +127,9 @@ export default Vue.extend({
       },
       hoversStart: [] as Array<Cordinates>,
       hoversData: {} as HoverInputDto,
-      hoversResponse:[]
+      hoversResponse: [],
+      sent: false,
+      apiError:false
     };
   },
   methods: {
@@ -107,7 +148,12 @@ export default Vue.extend({
     updateStartHeading(i: number, heading: string) {
       this.hoversData.hovers[i].startingHeading = heading;
     },
-
+    async checkData() {
+      this.sent = true;
+      if (this.valid && this.sent) {
+        await this.sendData();
+      }
+    },
     async sendData(): Promise<void> {
       const aux = clone(this.limit);
       //limit will never be null because of validator
@@ -117,15 +163,28 @@ export default Vue.extend({
       this.hoversData.limit.y = parseInt(aux.y);
 
       try {
-        const res = await this.$services.hover.sendInstructions(this.hoversData);
-        console.log(res)
+        const res = await this.$services.hover.sendInstructions(
+          this.hoversData
+        );
         //@ts-ignore
         this.hoversResponse = res.hoverOutputData;
         this.hoverQtd = "";
         // this.limit = { x: null, y: null };
       } catch (err) {
+        this.apiError=true;
         console.log(err);
       }
+    },
+  },
+  computed: {
+    valid(): boolean {
+      let status = true;
+      this.hoversData.hovers.forEach((el) => {
+        !el.startingHeading || el.instructions.length === 0
+          ? (status = false)
+          : null;
+      });
+      return status;
     },
   },
 
@@ -140,6 +199,7 @@ export default Vue.extend({
         });
       }
       this.hoversData = clone(resp);
+      this.hoversResponse=[]
     },
   },
 });
