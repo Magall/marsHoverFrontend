@@ -8,6 +8,7 @@
         v-model="limit.x"
         placeholder="East limit"
         required
+        min="1"
       />
       <input
         type="number"
@@ -15,6 +16,7 @@
         v-model="limit.y"
         placeholder="North limit"
         required
+        min="1"
       />
       <input
         type="number"
@@ -22,6 +24,7 @@
         v-model="hoverQtd"
         placeholder="How Many hovers?"
         required
+        min="1"
       />
       <div v-if="parseInt(hoverQtd) > 0" class="hovers-container">
         <h3>Hovers Data</h3>
@@ -39,6 +42,8 @@
             @focusout="updateHoverStartPosition(i, $event, 'x')"
             placeholder="East starting position"
             required
+            min=0
+            :max="limit.x"
           />
           <input
             type="number"
@@ -46,6 +51,8 @@
             placeholder="North starting position"
             @focusout="updateHoverStartPosition(i, $event, 'y')"
             required
+            min="0"
+            :max="limit.y"
           />
           <select
             class="select"
@@ -129,7 +136,7 @@ export default Vue.extend({
       hoversData: {} as HoverInputDto,
       hoversResponse: [],
       sent: false,
-      apiError:false
+      apiError:true
     };
   },
   methods: {
@@ -199,7 +206,7 @@ export default Vue.extend({
         });
       }
       this.hoversData = clone(resp);
-      this.hoversResponse=[]
+      // this.hoversResponse=[]
     },
   },
 });

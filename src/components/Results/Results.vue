@@ -1,9 +1,10 @@
 <template>
   <div id="results" v-if="hovers">
+    <h2>Results</h2>
     <div
       class="result"
       v-for="(res, i) in hovers"
-      :key="res.x + res.y + res.heading + res.hoverHistory.length"
+      :key="res.x + res.y  + res.hoverHistory.length"
     >
       <span>Hover {{ i + 1 }}</span>
       <span>East: {{ res.finalPos.x }}</span>
