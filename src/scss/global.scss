@@ -1,0 +1,67 @@
+.container {
+    margin: $spacing-medium;
+  }
+  .selected {
+    background: $blue;
+    color: white;
+  }
+  
+  .btn {
+    border: none;
+    padding: $spacing-small $spacing-normal;
+    font-size: 16px;
+    border-radius: 4px;
+  }
+  
+  .btn-primary {
+    background: $blue;
+    padding: $spacing-small;
+    color: white;
+    border: 0;
+    border-radius: $spacing-small/2;
+  }
+  .btn-danger {
+    background: $danger;
+    padding: $spacing-small;
+    color: white;
+    border: 0;
+    border-radius: $spacing-small/2;
+  }
+  
+  .input {
+    border: 1px solid $gray;
+    border-radius: 4px;
+    height: $spacing-big;
+    padding: $spacing-small;
+  }
+  
+  .input:focus {
+    outline: none !important;
+    border-color: #749ce6;
+    box-shadow: 0 0 10px #c7dcff;
+  }
+  
+  .select {
+    border: 1px solid $gray;
+    border-radius: 4px;
+    height: $spacing-big;
+    width: 100%;
+  }
+  
+  .select:focus {
+    outline: none !important;
+    border-color: #c4c4c4;
+    box-shadow: 0 0 $spacing-small #c7dcff;
+  }
+  
+  *{
+    box-sizing: border-box;
+  }
+  
+  .invalid {
+    border: 1px solid rgb(255, 135, 135) !important;
+  }
+  
+  .btn, .btn-primary, .btn-danger {
+    cursor: pointer;
+  }

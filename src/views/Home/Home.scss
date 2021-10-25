@@ -1,0 +1,28 @@
+input {
+    margin-right: $spacing-small;
+  }
+  .hover-line {
+    margin-bottom: $spacing-small;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+  }
+  .hovers-container {
+    border: 1px solid $gray;
+    width: fit-content;
+    padding: $spacing-medium;
+    margin: auto;
+    margin-top: $spacing-normal;
+    border-radius: 8px;
+    padding-top: 0;
+    span {
+      margin-right: $spacing-small;
+    }
+    .instructions {
+      display: flex;
+      flex-direction: column;
+      .buttons {
+        display: flex;
+      }
+    }
+  }
